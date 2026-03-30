@@ -27,7 +27,7 @@ export default function ModulesDao(db) {
     return modules.filter((module) => module.course === courseId);
   }
   return {
-    findModulesForCourse,
+    findModulesForCourse, updateModule, deleteModule, createModule
   };
  }
  
