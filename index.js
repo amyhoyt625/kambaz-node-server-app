@@ -5,13 +5,12 @@ import cors from "cors";
 import db from "./kambaz/database/index.js";
 import UserRoutes from "./kambaz/users/routes.js";
 import CourseRoutes from './kambaz/courses/routes.js';
-import mongoose from "mongoose";
-
-import "dotenv/config";
-import session from "express-session";
 import AssignmentRoutes from './kambaz/assignments/routes.js';
 import EnrollmentRoutes from './kambaz/enrollments/routes.js';
 import ModulesRoutes from './kambaz/modules/routes.js';
+import mongoose from "mongoose";
+import "dotenv/config";
+import session from "express-session";
 
 const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
 mongoose.connect(CONNECTION_STRING);
@@ -36,13 +35,13 @@ if (process.env.SERVER_ENV !== "development") {
   };
 }
 app.use(session(sessionOptions));
-app.use(express.json()); 
+app.use(express.json());
 UserRoutes(app, db);
 CourseRoutes(app, db);
-AssignmentRoutes(app, db);
-EnrollmentRoutes(app,db);
-ModulesRoutes(app,db);
+AssignmentRoutes(app);
+EnrollmentRoutes(app, db);
+ModulesRoutes(app, db);
 
-Lab5(app); 
+Lab5(app);
 Hello(app);
-app.listen(process.env.PORT || 4000)
+app.listen(process.env.PORT || 4000);
