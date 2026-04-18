@@ -8,9 +8,12 @@ import CourseRoutes from './kambaz/courses/routes.js';
 import AssignmentRoutes from './kambaz/assignments/routes.js';
 import EnrollmentRoutes from './kambaz/enrollments/routes.js';
 import ModulesRoutes from './kambaz/modules/routes.js';
+import QuizRoutes from './kambaz/quizzes/routes.js'; //added
+import QuizSubmissionRoutes from './kambaz/quizSubmissions/routes.js'; //added
 import mongoose from "mongoose";
 import "dotenv/config";
 import session from "express-session";
+
 
 const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
 mongoose.connect(CONNECTION_STRING);
@@ -41,6 +44,8 @@ CourseRoutes(app, db);
 AssignmentRoutes(app);
 EnrollmentRoutes(app, db);
 ModulesRoutes(app, db);
+QuizRoutes(app); //added
+QuizSubmissionRoutes(app); //added
 
 Lab5(app);
 Hello(app);

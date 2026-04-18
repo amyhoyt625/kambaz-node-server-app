@@ -1,0 +1,25 @@
+import mongoose from "mongoose";
+const schema = new mongoose.Schema({
+  _id: String,
+  title: { type: String, default: "Unnamed Quiz" },
+  description: { type: String, default: "" },
+  quizType: { type: String, default: "GRADED_QUIZ" },
+  points: { type: Number, default: 0 },
+  assignmentGroup: { type: String, default: "QUIZZES" },
+  shuffleAnswers: { type: Boolean, default: true },
+  timeLimit: { type: Number, default: 20 },
+  multipleAttempts: { type: Boolean, default: false },
+  howManyAttempts: { type: Number, default: 1 },
+  showCorrectAnswers: { type: String, default: "immediately" },
+  accessCode: { type: String, default: "" },
+  oneQuestionAtATime: { type: Boolean, default: true },
+  webcamRequired: { type: Boolean, default: false },
+  lockQuestionsAfterAnswering: { type: Boolean, default: false },
+  dueDate: { type: String, default: "" },
+  availableDate: { type: String, default: "" },
+  untilDate: { type: String, default: "" },
+  published: { type: Boolean, default: false },
+  course: String,
+  questions: { type: Array, default: [] },
+});
+export default schema;

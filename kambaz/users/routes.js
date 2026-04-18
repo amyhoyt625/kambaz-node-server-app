@@ -1,19 +1,19 @@
 import UsersDao from "./dao.js";
+import EnrollmentsDao from "../enrollments/dao.js";
 
 export default function UserRoutes(app) {
- const dao = UsersDao();
+  const dao = UsersDao();
+  const enrollmentsDao = EnrollmentsDao();
 
- const createUser = async (req, res) => {
-  const user = await dao.createUser(req.body);
-  res.json(user);
-};
-
+  const createUser = async (req, res) => {
+    const user = await dao.createUser(req.body);
+    res.json(user);
+  };
 
   const deleteUser = async (req, res) => {
     const status = await dao.deleteUser(req.params.userId);
     res.json(status);
-};
-
+  };
 
   const findAllUsers = async (req, res) => {
     const { role, name } = req.query;
@@ -27,11 +27,9 @@ export default function UserRoutes(app) {
       res.json(users);
       return;
     }
-
     const users = await dao.findAllUsers();
     res.json(users);
   };
-
 
   const findUserById = async (req, res) => {
     const user = await dao.findUserById(req.params.userId);
@@ -43,16 +41,13 @@ export default function UserRoutes(app) {
     const userUpdates = req.body;
     await dao.updateUser(userId, userUpdates);
     const currentUser = req.session["currentUser"];
-   if (currentUser && currentUser._id === userId) {
-     req.session["currentUser"] = { ...currentUser, ...userUpdates };
-   }
+    if (currentUser && currentUser._id === userId) {
+      req.session["currentUser"] = { ...currentUser, ...userUpdates };
+    }
     res.json(currentUser);
   };
 
-
-
-
-  const signup = async(req, res) => {
+  const signup = async (req, res) => {
     const user = await dao.findUserByUsername(req.body.username);
     if (user) {
       res.status(400).json({ message: "Username already taken" });
@@ -63,8 +58,7 @@ export default function UserRoutes(app) {
     res.json(currentUser);
   };
 
-
-  const signin = async(req, res) => {
+  const signin = async (req, res) => {
     const { username, password } = req.body;
     const currentUser = await dao.findUserByCredentials(username, password);
     if (currentUser) {
@@ -75,12 +69,10 @@ export default function UserRoutes(app) {
     }
   };
 
-
   const signout = async (req, res) => {
     req.session.destroy();
     res.sendStatus(200);
   };
-
 
   const profile = async (req, res) => {
     const currentUser = req.session["currentUser"];
@@ -91,11 +83,25 @@ export default function UserRoutes(app) {
     res.json(currentUser);
   };
 
-
+  //changed
+  const getCoursesForUser = async (req, res) => {
+    let { uid } = req.params;
+    if (uid === "current") {
+      const currentUser = req.session["currentUser"];
+      if (!currentUser) {
+        res.sendStatus(401);
+        return;
+      }
+      uid = currentUser._id;
+    }
+    const enrollments = await enrollmentsDao.findEnrollmentsForUser(uid);
+    res.json(enrollments);
+  };
 
   app.post("/api/users", createUser);
   app.get("/api/users", findAllUsers);
-  app.get("/api/users/:userId", findUserById);
+  app.get("/api/users/:uid/courses", getCoursesForUser);  // ← must come BEFORE /:userId
+  app.get("/api/users/:userId", findUserById);             // ← now won't shadow it
   app.put("/api/users/:userId", updateUser);
   app.delete("/api/users/:userId", deleteUser);
   app.post("/api/users/signup", signup);
@@ -103,4 +109,3 @@ export default function UserRoutes(app) {
   app.post("/api/users/signout", signout);
   app.post("/api/users/profile", profile);
 }
-
