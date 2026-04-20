@@ -1,3 +1,7 @@
+//This file defines all backend Express API routes for quizzes, connecting 
+//HTTP endpoints to DAO functions that handle database operations like 
+//creating, reading, updating, deleting, and publishing/unpublishing quizzes
+
 import * as dao from "./dao.js";
 
 export default function QuizRoutes(app) {

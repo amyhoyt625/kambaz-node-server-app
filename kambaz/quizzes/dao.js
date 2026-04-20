@@ -1,3 +1,6 @@
+//dao defines backend db functions for quizzes using model
+//allowing quizzes to be created , retrieved, updated, and deleted based on course or quiz ID
+
 import { v4 as uuidv4 } from "uuid";
 import model from "./model.js";
 

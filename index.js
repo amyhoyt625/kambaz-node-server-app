@@ -14,6 +14,9 @@ import mongoose from "mongoose";
 import "dotenv/config";
 import session from "express-session";
 
+// Entry point for the Express server. Connects to MongoDB, configures CORS and 
+// session middleware, registers all route handlers, and starts listening on port 4000
+
 
 const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
 mongoose.connect(CONNECTION_STRING);
